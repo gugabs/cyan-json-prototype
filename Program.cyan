@@ -1,9 +1,9 @@
 package main
 
 object Program
-	func run {
-		var Person person = Person("Carol", 13, Address("Rua Pi", 314));
+  func run {
+    var Person person = Person("Carol", 13, Address("Rua Pi", 314));
 
-		Out println: (Json toJson: person);
-	}
+    Out println: (Json toJson: person);
+  }
 end

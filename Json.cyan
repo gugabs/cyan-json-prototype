@@ -1,106 +1,106 @@
 package main
 
 object Json
-	var Int tabSize = 4;
+  var Int tabSize = 4;
 
-	func setDefaultTabSize: Int tabSize {
-		self.tabSize = tabSize;
-	}
+  func setDefaultTabSize: Int tabSize {
+    self.tabSize = tabSize;
+  }
 
-	func getDefaultTabSize -> Int {
-		return self.tabSize;
-	}
+  func getDefaultTabSize -> Int {
+    return self.tabSize;
+  }
 
-	func toJson: Any obj -> String {
-		return toJson: obj, getDefaultTabSize;
-	}
+  func toJson: Any obj -> String {
+    return toJson: obj, getDefaultTabSize;
+  }
 
-	func toJson: Any obj, Int tabSize -> String {
-		var String breakLine = "\n";
-		var String space = " ";
+  func toJson: Any obj, Int tabSize -> String {
+    var String breakLine = "\n";
+    var String space = " ";
 
 
-		var json = "{" ++ breakLine;
+    var json = "{" ++ breakLine;
 
-		for methodSignature in obj getMethodNameList {
-			var isGetMethod = methodSignature startsWith: "get";
+    for methodSignature in obj getMethodNameList {
+      var isGetMethod = methodSignature startsWith: "get";
 
-			if isGetMethod == true {
-				var Int endMethodNameCharIndex = methodSignature indexOf: ' ';
-				var String methodName = methodSignature substring: 0, endMethodNameCharIndex;
+      if isGetMethod == true {
+        var Int endMethodNameCharIndex = methodSignature indexOf: ' ';
+        var String methodName = methodSignature substring: 0, endMethodNameCharIndex;
 
-				var Boolean isMethodFromAny = isMethodFromAny: methodName;
+        var Boolean isMethodFromAny = isMethodFromAny: methodName;
 
-				if isMethodFromAny == false {
-					var String key = methodName substring: 3;
-					var String | Nil value = Nil;
+        if isMethodFromAny == false {
+          var String key = methodName substring: 3;
+          var String | Nil value = Nil;
 
-					var Int i = 0;
+          var Int i = 0;
 
-					{ ^ i < tabSize } whileTrue: {
-						json = json ++ space;
-						++i;
-					};
+          { ^ i < tabSize } whileTrue: {
+            json = json ++ space;
+            ++i;
+          };
 
-					var String jsonLine = "";
+          var String jsonLine = "";
 
-					if isTypeFromCyanLang: (obj `methodName) == true {
-						key = key toLowerCase;
-						value = obj `methodName;
-						jsonLine = "\"$key\": \"$value\"," ++ breakLine;
-					} else {
-						value = toJson: obj `methodName, tabSize * 2;
-						jsonLine = "\"$key\": $value," ++ breakLine;
-					}
+          if isTypeFromCyanLang: (obj `methodName) == true {
+            key = key toLowerCase;
+            value = obj `methodName;
+            jsonLine = "\"$key\": \"$value\"," ++ breakLine;
+          } else {
+            value = toJson: obj `methodName, tabSize * 2;
+            jsonLine = "\"$key\": $value," ++ breakLine;
+          }
 
-					json = json ++ jsonLine;
-				}
-			}
-		}
+          json = json ++ jsonLine;
+        }
+      }
+    }
 
-		var Int i = 0;
+    var Int i = 0;
 
-		{ ^ i < (tabSize - getDefaultTabSize) } whileTrue: {
-			json = json ++ space;
-			++i;
-		};
+    { ^ i < (tabSize - getDefaultTabSize) } whileTrue: {
+      json = json ++ space;
+      ++i;
+    };
 
-		json = json ++ "}";
+    json = json ++ "}";
 
-		return json;
-	}
+    return json;
+  }
 
-	func isMethodFromAny: String methodName -> Boolean {
-		var anyMethods = [
-			"getFeatureListNameDoesNotCollide__",
-			"getAnnotListNameDoesNotCollide__",
-			"getSlotFeatureListNameDoesNotCollide__"
-		];
+  func isMethodFromAny: String methodName -> Boolean {
+    var anyMethods = [
+      "getFeatureListNameDoesNotCollide__",
+      "getAnnotListNameDoesNotCollide__",
+      "getSlotFeatureListNameDoesNotCollide__"
+    ];
 
-		if methodName in: anyMethods {
-			return true;
-		}
+    if methodName in: anyMethods {
+      return true;
+    }
 
-		return false;
-	}
+    return false;
+  }
 
-	func isTypeFromCyanLang: Any prototype -> Boolean {
-		var cyanBasicTypes = [
-			"Array",
-			"Byte",
-			"Char",
-			"Short",
-			"Int",
-			"Long",
-			"Float",
-			"Double",
-			"String"
-		];
+  func isTypeFromCyanLang: Any prototype -> Boolean {
+    var cyanBasicTypes = [
+      "Array",
+      "Byte",
+      "Char",
+      "Short",
+      "Int",
+      "Long",
+      "Float",
+      "Double",
+      "String"
+    ];
 
-		if prototype prototypeName in: cyanBasicTypes {
-			return true;
-		}
+    if prototype prototypeName in: cyanBasicTypes {
+      return true;
+    }
 
-		return false;
-	}
+    return false;
+  }
 end
