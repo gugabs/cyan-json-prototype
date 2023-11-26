@@ -1,0 +1,8 @@
+package main
+
+@init(name, age, address)
+object Person
+  @property String name
+  @property Int age
+  @property Address address
+end
