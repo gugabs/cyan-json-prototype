@@ -1,0 +1,7 @@
+package main
+
+@init(street, number)
+object Address
+  @property String street
+  @property Int number
+end
